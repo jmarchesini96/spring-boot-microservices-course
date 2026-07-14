@@ -10,3 +10,10 @@ Este repositorio contiene todos los ejercicios, proyectos y configuraciones desa
 
 ## 📁 Estructura del Proyecto
 (Aquí irás listando tus microservicios conforme los crees)
+
+## 🚀 Documentación de la API (Swagger)
+
+Cuando el microservicio esté corriendo localmente, puedes acceder a la interfaz interactiva de Swagger y revisar los endpoints desde el navegador:
+
+* 🌍 **Swagger UI:** [http://localhost:8080/swagger-ui/index.html]
+* 📄 **OpenAPI JSON Spec:** [http://localhost:8080/v3/api-docs]
