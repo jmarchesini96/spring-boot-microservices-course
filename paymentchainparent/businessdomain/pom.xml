@@ -19,6 +19,7 @@
     <modules>
         <module>customer</module>
         <module>billing</module>
+        <module>product</module>
     </modules>
 
     <dependencies>
