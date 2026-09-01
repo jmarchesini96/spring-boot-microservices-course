@@ -1,8 +1,7 @@
 package com.paymentchain.product.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -10,7 +9,7 @@ import lombok.Data;
 @Entity
 public class Product {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
     private  String code;

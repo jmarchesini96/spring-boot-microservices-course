@@ -20,7 +20,7 @@
         <module>customer</module>
         <module>billing</module>
         <module>product</module>
-        <module>transactions</module>
+        <module>transaction</module>
     </modules>
 
     <dependencies>

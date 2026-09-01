@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Customer {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
     private String code;
