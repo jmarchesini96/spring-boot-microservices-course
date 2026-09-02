@@ -1,8 +1,7 @@
 package com.paymentchain.transaction.controller;
 
 import com.paymentchain.transaction.entities.Transaction;
-import com.paymentchain.transaction.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.paymentchain.transaction.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,44 +14,37 @@ import java.util.Optional;
 @RequestMapping("/transaction")
 public class TransactionRestController {
 
-    @Autowired
-    TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
+
+    public TransactionRestController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> list() {
-        List<Transaction> transactions = transactionRepository.findAll();
-        return ResponseEntity.ok(transactions);
+    public ResponseEntity<List<Transaction>> list(@RequestParam(required = false) String iban) {
+        if (iban != null && !iban.isBlank()) {
+            return ResponseEntity.ok(transactionService.findByAccountIban(iban));
+        }
+        return ResponseEntity.ok(transactionService.list());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> get(@PathVariable long id) {
-        Optional<Transaction> transaction = transactionRepository.findById(id);
-        return transaction.map(ResponseEntity::ok)
+        return transactionService.findById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Transaction> put(@PathVariable long id, @RequestBody Transaction input) {
-        Optional<Transaction> transaction = transactionRepository.findById(id);
-
-        return transaction.map(existingTransaction -> {
-            existingTransaction.setReference(input.getReference());
-            existingTransaction.setAccountIban(input.getAccountIban());
-            existingTransaction.setDate(input.getDate());
-            existingTransaction.setAmount(input.getAmount());
-            existingTransaction.setFee(input.getFee());
-            existingTransaction.setDescription(input.getDescription());
-            existingTransaction.setStatus(input.getStatus());
-            existingTransaction.setChannel(input.getChannel());
-
-            Transaction updatedTransaction = transactionRepository.save(existingTransaction);
-            return ResponseEntity.ok(updatedTransaction);
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+        return transactionService.update(id, input)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Transaction> post(@RequestBody Transaction input) {
-        Transaction savedTransaction = transactionRepository.save(input);
+        Transaction savedTransaction = transactionService.save(input);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -65,12 +57,10 @@ public class TransactionRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
-        return transactionRepository.findById(id)
-                .map(transaction -> {
-                    transactionRepository.delete(transaction);
-                    return ResponseEntity.ok().<Void>build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        if (transactionService.delete(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
