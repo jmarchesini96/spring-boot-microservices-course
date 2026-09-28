@@ -1,4 +1,4 @@
-package com.paymentchain.transactions;
+package com.paymentchain.transaction;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

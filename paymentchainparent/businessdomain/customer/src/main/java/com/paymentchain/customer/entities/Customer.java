@@ -1,5 +1,6 @@
 package com.paymentchain.customer.entities;
 
+import com.paymentchain.customer.dto.TransactionDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 public class Customer {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
     private String code;
@@ -21,6 +22,6 @@ public class Customer {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomerProduct> products;
     @Transient
-    private List<?> transactions;
+    private List<TransactionDto> transactions;
 
 }
