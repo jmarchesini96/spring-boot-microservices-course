@@ -23,6 +23,7 @@ public class Transaction {
     private double fee;
     private String description;
 
+    @Convert(converter = StatusConverter.class)
     @Column(name = "status", length = 2, nullable = false)
     private Status status;
 

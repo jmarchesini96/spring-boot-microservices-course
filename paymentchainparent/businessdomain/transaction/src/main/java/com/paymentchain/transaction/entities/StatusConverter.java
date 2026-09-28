@@ -21,7 +21,7 @@ public class StatusConverter implements AttributeConverter<Status, String> {
         if (dbData == null) {
             return null;
         }
-        return Status.fromCode(dbData);
+        return Status.fromValue(dbData);
     }
 
 }

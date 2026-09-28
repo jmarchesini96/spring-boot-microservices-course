@@ -27,14 +27,19 @@ public enum Status {
         return description;
     }
 
-    // Permite deserializar desde JSON cuando envían "01", "02", etc.
     @JsonCreator
-    public static Status fromCode(String code) {
+    public static Status fromValue(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+
         for (Status status : Status.values()) {
-            if (status.code.equals(code)) {
+            if (status.description.equalsIgnoreCase(value.trim())
+                    || status.name().equalsIgnoreCase(value.trim())
+                    || status.code.equalsIgnoreCase(value.trim())) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Código de estado desconocido: " + code);
+        throw new IllegalArgumentException("Estado desconocido: " + value);
     }
 }

@@ -22,3 +22,11 @@ Cuando los microservicios estén corriendo localmente, puedes acceder a la inter
 ### 💳 Microservicio: Billing (Puerto 8081)
 * 🌍 **Swagger UI:** [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)
 * 📄 **OpenAPI JSON Spec:** [http://localhost:8081/v3/api-docs](http://localhost:8081/v3/api-docs)
+
+### 💳 Microservicio: Product (Puerto 8082)
+* 🌍 **Swagger UI:** [http://localhost:8082/swagger-ui/index.html](http://localhost:8082/swagger-ui/index.html)
+* 📄 **OpenAPI JSON Spec:** [http://localhost:8082/v3/api-docs](http://localhost:8082/v3/api-docs)
+
+### 💳 Microservicio: Transaction (Puerto 8083)
+* 🌍 **Swagger UI:** [http://localhost:8083/swagger-ui/index.html](http://localhost:8083/swagger-ui/index.html)
+* 📄 **OpenAPI JSON Spec:** [http://localhost:8083/v3/api-docs](http://localhost:8083/v3/api-docs)

@@ -1,9 +1,11 @@
 package com.paymentchain.customer.controller;
 
 import com.paymentchain.customer.dto.ProductDto;
+import com.paymentchain.customer.dto.TransactionDto;
 import com.paymentchain.customer.entities.Customer;
 import com.paymentchain.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import java.net.URI;
@@ -29,6 +32,7 @@ import java.util.Optional;
 public class CustomerRestController {
 
     private static final String URI_API_PRODUCTOS = "http://localhost:8082/product";
+    private static final String URI_API_TRANSACCIONES = "http://localhost:8083/transaction";
 
     @Autowired
     CustomerRepository customerRepository;
@@ -128,6 +132,12 @@ public class CustomerRestController {
                             .ifPresent(products -> products.forEach(product ->
                                     product.setProductName(getProductName(product.getProductId()))
                             ));
+
+                    if (customer.getIban() != null && !customer.getIban().isBlank()) {
+                        List<TransactionDto> transactions = getTransactions(customer.getIban());
+                        customer.setTransactions(transactions);
+                    }
+
                     return ResponseEntity.ok(customer);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -154,6 +164,29 @@ public class CustomerRestController {
         } catch (Exception e) {
             System.err.println(">>> ERROR LLAMANDO A PRODUCT SERVICE (ID " + productId + "): " + e.getMessage());
             return "Unknown / Unavailable";
+        }
+    }
+
+    private List<TransactionDto> getTransactions(String iban) {
+        try {
+            WebClient clientWeb = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+                    .baseUrl(URI_API_TRANSACCIONES)
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build();
+
+            return clientWeb.get()
+                    .uri(uriBuilder -> {
+                        if (iban != null && !iban.isBlank()) {
+                            return uriBuilder.queryParam("iban", iban).build();
+                        }
+                        return uriBuilder.build();
+                    })
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<List<TransactionDto>>() {})
+                    .block();
+        } catch (Exception e) {
+            System.err.println(">>> ERROR LLAMANDO A TRANSACTION SERVICE: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 
