@@ -2,6 +2,7 @@ package com.paymentchain.customer.entities;
 
 import com.paymentchain.customer.dto.TransactionDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +14,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
+    @NotBlank(message = "code es obligatorio")
     private String code;
+    @NotBlank(message = "name es obligatorio")
     private  String name;
     private String phone;
     private String iban;

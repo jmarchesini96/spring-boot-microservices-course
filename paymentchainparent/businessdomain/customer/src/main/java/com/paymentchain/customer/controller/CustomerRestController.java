@@ -4,6 +4,7 @@ import com.paymentchain.customer.dto.ProductDto;
 import com.paymentchain.customer.dto.TransactionDto;
 import com.paymentchain.customer.entities.Customer;
 import com.paymentchain.customer.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -65,7 +66,7 @@ public class CustomerRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> put(@PathVariable long id, @RequestBody Customer input) {
+    public ResponseEntity<Customer> put(@PathVariable long id, @Valid @RequestBody Customer input) {
         Optional<Customer> customer = customerRepository.findById(id);
 
         return customer.map(existingCustomer -> {
@@ -100,8 +101,9 @@ public class CustomerRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> post(@RequestBody Customer input) {
-        input.getProducts().forEach(x -> x.setCustomer(input));
+    public ResponseEntity<Customer> post(@Valid @RequestBody Customer input) {
+        Optional.ofNullable(input.getProducts())
+                .ifPresent(products -> products.forEach(p -> p.setCustomer(input)));
         Customer savedCustomer = customerRepository.save(input);
 
         // Construye la URI del nuevo recurso: /customers/{id}
