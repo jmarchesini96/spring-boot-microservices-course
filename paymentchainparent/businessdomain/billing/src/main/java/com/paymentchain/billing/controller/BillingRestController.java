@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/invoice")
-public class InvoiceRestController {
+public class BillingRestController {
 
     @Autowired
     InvoiceRepository invoiceRepository;

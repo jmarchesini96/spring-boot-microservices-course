@@ -67,7 +67,7 @@ This file contains the imputs shcmes for to test POST method on each microservic
 {
   "id": 0,
   "reference": "hg52487",
-  "ibanAccount": "000251487",
+  "accountIban": "000251487",
   "date": "2022-11-10T15:20:00.437Z",
   "amount": 100,
   "fee": 3,
@@ -81,7 +81,7 @@ This file contains the imputs shcmes for to test POST method on each microservic
 {
   "id": 0,
   "reference": "53254jks",
-  "ibanAccount": "000257849",
+  "accountIban": "000257849",
   "date": "2022-11-10T15:20:00.437Z",
   "amount": 100,
   "fee": 3,
