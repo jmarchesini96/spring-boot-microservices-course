@@ -2,6 +2,7 @@ package com.paymentchain.product.controller;
 
 import com.paymentchain.product.entities.Product;
 import com.paymentchain.product.repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class ProductRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> put(@PathVariable long id, @RequestBody Product input) {
+    public ResponseEntity<Product> put(@PathVariable long id, @Valid @RequestBody Product input) {
         Optional<Product> product = productRepository.findById(id);
 
         return product.map(existingProduct -> {
@@ -45,7 +46,7 @@ public class ProductRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> post(@RequestBody Product input) {
+    public ResponseEntity<Product> post(@Valid @RequestBody Product input) {
         Product savedProduct = productRepository.save(input);
 
         URI location = ServletUriComponentsBuilder
