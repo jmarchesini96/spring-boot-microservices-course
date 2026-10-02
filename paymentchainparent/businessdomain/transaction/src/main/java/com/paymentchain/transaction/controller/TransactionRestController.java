@@ -2,13 +2,13 @@ package com.paymentchain.transaction.controller;
 
 import com.paymentchain.transaction.entities.Transaction;
 import com.paymentchain.transaction.service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/transaction")
@@ -36,14 +36,14 @@ public class TransactionRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> put(@PathVariable long id, @RequestBody Transaction input) {
+    public ResponseEntity<Transaction> put(@PathVariable long id, @Valid @RequestBody Transaction input) {
         return transactionService.update(id, input)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> post(@RequestBody Transaction input) {
+    public ResponseEntity<Transaction> post(@Valid @RequestBody Transaction input) {
         Transaction savedTransaction = transactionService.save(input);
 
         URI location = ServletUriComponentsBuilder

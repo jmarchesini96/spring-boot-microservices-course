@@ -1,6 +1,8 @@
 package com.paymentchain.transaction.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ public class Transaction {
     private long id;
     private String reference;
 
+    @NotBlank
     @Column(name = "account_iban", nullable = false)
     private String accountIban;
 
@@ -23,6 +26,7 @@ public class Transaction {
     private double fee;
     private String description;
 
+    @NotNull
     @Convert(converter = StatusConverter.class)
     @Column(name = "status", length = 2, nullable = false)
     private Status status;
