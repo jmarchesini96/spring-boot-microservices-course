@@ -2,6 +2,7 @@ package com.paymentchain.billing.controller;
 
 import com.paymentchain.billing.entities.Invoice;
 import com.paymentchain.billing.repository.InvoiceRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class BillingRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Invoice> post(@RequestBody Invoice input) {
+    public ResponseEntity<Invoice> post(@Valid @RequestBody Invoice input) {
         Invoice savedInvoice = invoiceRepository.save(input);
 
         URI location = ServletUriComponentsBuilder
