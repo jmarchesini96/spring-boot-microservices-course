@@ -1,6 +1,6 @@
-package com.paymentchain.customer.common;
+package com.paymentchain.shared.common;
 
-import com.paymentchain.customer.dto.ErrorResponse;
+import com.paymentchain.shared.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+/**
+ * Manejador global de excepciones compartido por todos los microservicios de dominio.
+ * Centraliza el formato de respuesta de error (ErrorResponse) de forma uniforme.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -55,6 +59,14 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST,
                 "Violación de integridad de datos: " + ex.getMostSpecificCause().getMessage(),
                 request);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+            IllegalArgumentException ex,
+            HttpServletRequest request) {
+
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     private ResponseEntity<ErrorResponse> buildResponse(

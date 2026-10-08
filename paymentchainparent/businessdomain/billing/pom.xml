@@ -14,4 +14,12 @@
     <name>billing</name>
     <description>billing</description>
 
+    <dependencies>
+        <!-- Manejo global de errores compartido -->
+        <dependency>
+            <groupId>com.paymentchain</groupId>
+            <artifactId>shared-error</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
