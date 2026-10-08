@@ -17,11 +17,22 @@
     <description>Agregador de Microservicios de Dominio de Negocio</description>
 
     <modules>
+        <module>shared-error</module>
         <module>customer</module>
         <module>billing</module>
         <module>product</module>
         <module>transaction</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.paymentchain</groupId>
+                <artifactId>shared-error</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
